@@ -1,14 +1,19 @@
 {% extends 'WhichCan/base.html'%} 
+
 {% block title %} <title> WhichBin-Home </title>
 <link rel="icon" href="/static/WhichCan/transparent_recycle.png"> {% endblock %} 
 {% block homeactive %}active
 {% endblock %} 
+
 {% block body %} 
 <div class="container">
     <h2>Please select correct options to find bin color...</h2>
     <div class="container">
-        <form action="/findDustbin/" method="post"> {% csrf_token %} <div class="container" style="font-size: large;">
-                Does your waste is... <div>
+        <form action="/findDustbin/" method="post"> 
+            {% csrf_token %} 
+            <div class="container" style="font-size: large;">
+                Does your waste is... 
+                <div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="wet" id="id_wet" value="wet">
                         <label class="form-check-label" for="id_wet"> Wet</label>
@@ -33,10 +38,11 @@
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="non_biodegradable" id="id_non_biodegradable" value="non_biodegradable">
-                        <label class="form-check-label" for="id_non_biodegradable"> non-biodegradable </label>
+                        <label class="form-check-label" for="id_non_biodegradable"> Non Biodegradable </label>
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="btn_click" id="id_btn_click" value="{{btn_clicked}}">
             <button type="submit" class="btn btn-success" style="size: 20px; margin-left: 20px;margin-top: 5px;" id="id_findbin">Submit</button>
         </form>
     </div>
@@ -45,9 +51,12 @@
 
 {% block js %}
 <script>
-    $("#id_findbin").on('click',function(){
-        console.log("clicked");
-        console.log("done");
-    });
+    var btn_submt = $("#id_btn_click").val();
+    function redirectTO(){
+        window.location.assign("/");
+    }
+    if (btn_submt == "clicked"){
+        setTimeout(redirectTO, 7000);
+    }
 </script>
 {% endblock %}
