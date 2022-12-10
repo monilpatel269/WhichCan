@@ -1,0 +1,53 @@
+{% extends 'WhichCan/base.html'%} 
+{% block title %} <title> WhichBin-Home </title>
+<link rel="icon" href="/static/WhichCan/transparent_recycle.png"> {% endblock %} 
+{% block homeactive %}active
+{% endblock %} 
+{% block body %} 
+<div class="container">
+    <h2>Please select correct options to find bin color...</h2>
+    <div class="container">
+        <form action="/findDustbin/" method="post"> {% csrf_token %} <div class="container" style="font-size: large;">
+                Does your waste is... <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="wet" id="id_wet" value="wet">
+                        <label class="form-check-label" for="id_wet"> Wet</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="dry" id="id_dry" value="dry">
+                        <label class="form-check-label" for="id_dry">Dry</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="biomedical" id="id_biomedical" value="biomedical">
+                        <label class="form-check-label" for="id_biomedical">Biomedical</label>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="recyclable" id="id_recyclable" value="recyclable">
+                        <label class="form-check-label" for="id_recyclable">Recyclable </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="biodegradable" id="id_biodegradable" value="biodegradable">
+                        <label class="form-check-label" for="id_biodegradable">Biodegradable</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="non_biodegradable" id="id_non_biodegradable" value="non_biodegradable">
+                        <label class="form-check-label" for="id_non_biodegradable"> non-biodegradable </label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success" style="size: 20px; margin-left: 20px;margin-top: 5px;" id="id_findbin">Submit</button>
+        </form>
+    </div>
+</div> 
+{% endblock %}
+
+{% block js %}
+<script>
+    $("#id_findbin").on('click',function(){
+        console.log("clicked");
+        console.log("done");
+    });
+</script>
+{% endblock %}
