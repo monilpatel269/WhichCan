@@ -1,0 +1,72 @@
+{% extends 'WhichCan/base.html' %}
+
+{% block title%}
+<title>WhichCan-Donate</title>
+<link rel="icon" href="/static/WhichCan/transparent_recycle.png">
+{% endblock %}
+
+{% block body %}
+<div class="container my-3">
+        <h3>Donate</h3>
+        <div class="form-group my-3">
+            <label for="id_email">Email</label>
+            <input type="email" class="form-control" id="id_email" name="email" placeholder="Email" required/>
+        </div>
+        <div class="form-group my-3">
+            <label for="id_amount">Amount</label>
+            <input type="text" class="form-control" id="id_amount" name="amount" placeholder="Amount" required/>
+        </div>
+        <button type="submit" class="btn btn-success" id="id_donate">Donate</button>
+</div> 
+{% endblock %}
+
+{% block js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+    // Create an instance of the Stripe object with your publishable API key
+    var stripe = Stripe('{{ stripe_publishable_key }}');
+    var checkoutButton = document.getElementById('id_donate');
+
+    checkoutButton.addEventListener('click', function () {
+
+        var email = $('#id_email').val().trim();
+        if (email.length == 0) {
+            alert("Please enter your email address.");
+            return;
+        }
+
+        var amount = $('#id_amount').val();
+        if (amount < 10) {
+            alert("Minimum amount is Rs.10");
+            return;
+        }
+
+        // Create a new Checkout Session using the server-side endpoint you
+        // created in step 3.
+        fetch("{% url 'api_checkout_session' %}", {
+            method: 'POST',
+            body: JSON.stringify(
+                { email: email ,
+                amount: amount }
+            )
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (session) {
+                return stripe.redirectToCheckout({ sessionId: session.sessionId });
+            })
+            .then(function (result) {
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, you should display the localized error message to your
+                // customer using `error.message`.
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    });
+</script>
+{% endblock %}
